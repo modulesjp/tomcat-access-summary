@@ -8,9 +8,6 @@ export PATH=$PATH:/usr/sbin
 # Variable setting
 LOGDATE=`date -d '1 day ago' '+%Y-%m-%d'`
 DATA=()
-MAIL_TO="https://modules.jp"
-MAIL_FROM="https://modules.jp"
-SUBJECT="Access Log"
 
 # EXECUTION
 grep_result=($(grep GET /usr/local/tomcat/logs/access_log.${LOGDATE}.txt | awk '{print $7}' | sort | uniq -c | grep -ive '\.\(css\|js\|txt\|ico\|png\|bootstrap*\|ttf\|woff2\)'))
@@ -22,7 +19,6 @@ if [ ${?} -eq 0 ]; then
       RET=$?
       if [ $RET -lt 2 ]; then
         DATA=("${DATA[@]}" "[ $i pv : ")
-        echo -n "$i pv : "
       else
         ISF=$'\n'
         DATA=("${DATA[@]}" "$i ]")
@@ -31,4 +27,6 @@ if [ ${?} -eq 0 ]; then
 else
   write_log "001-E There is no access infomation."
 fi
+
+echo ${DATA[@]}
 exit
